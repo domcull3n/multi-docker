@@ -3,4 +3,18 @@ services:
   - docker
 
 before_install:
-  -docker build -t domcull3n/react-test -f ./client/Dockerfile.dev
+  - docker build -t domcull3n/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true domcull3n/react-test npm run test -- --coverage
+
+after_success:
+  - docker build -t domcull3n/multi-client ./client
+  - docker build -t domcull3n/multi-nginx ./nginx
+  - docker build -t domcull3n/multi-server ./server
+  - docker build -t domcull3n/multi-worker ./worker
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --pasword-stdin
+  - docker push domcull3n/multi-client
+  - docker push domcull3n/multi-nginx
+  - docker push domcull3n/multi-server
+  - docker push domcull3n/multi-worker
