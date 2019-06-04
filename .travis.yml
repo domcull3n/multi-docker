@@ -13,7 +13,7 @@ after_success:
   - docker build -t domcull3n/multi-nginx ./nginx
   - docker build -t domcull3n/multi-server ./server
   - docker build -t domcull3n/multi-worker ./worker
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --pasword-stdin
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   - docker push domcull3n/multi-client
   - docker push domcull3n/multi-nginx
   - docker push domcull3n/multi-server
